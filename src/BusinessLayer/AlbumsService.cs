@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BusinessLayer.Contract;
 using BusinessLayer.Contract.Models;
 using DataLayer.Contract;
+using System.Linq;
 
 namespace BusinessLayer
 {
@@ -17,17 +18,26 @@ namespace BusinessLayer
 
         public async Task<Album> FindAlbum(string id)
         {
-            throw new System.NotImplementedException();
+            var dalAlbum = await _albumsRepo.FindAlbum(id);
+            var album = AutoMapper.Mapper.Instance.Map<Album>(dalAlbum);
+
+            return album;
         }
 
         public async Task<IEnumerable<Album>> GetAlbums(int page)
         {
-            throw new System.NotImplementedException();
+            var dalAlbums = await _albumsRepo.GetAlbums(page);
+            var albums = dalAlbums.Select(_ => AutoMapper.Mapper.Instance.Map<Album>(_)).ToArray();
+
+            return albums;
         }
 
-        public async Task<IEnumerable<Album>> GetAlbumsForUser(string id, int page)
+        public async Task<IEnumerable<Album>> GetAlbumsForUser(string userId, int page)
         {
-            throw new System.NotImplementedException();
+            var dalAlbums = await _albumsRepo.GetAlbumsForUser(userId, page);
+            var albums = dalAlbums.Select(_ => AutoMapper.Mapper.Instance.Map<Album>(_)).ToArray();
+
+            return albums;
         }
     }
 }
