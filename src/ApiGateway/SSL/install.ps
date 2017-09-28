@@ -1,0 +1,5 @@
+$guid = [guid]::NewGuid()
+$certHash = "3e6c784143206f4e7d67ac1bdb7d0252081e5874"
+$ip = "0.0.0.0"
+$port = "12345"
+"http add sslcert ipport=$($ip):$port certhash=$certHash appid={$guid}" | netsh

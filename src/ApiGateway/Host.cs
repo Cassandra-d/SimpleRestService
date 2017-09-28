@@ -8,7 +8,7 @@ namespace ApiGateway
     {
         static void Main(string[] args)
         {
-            var address = "http://localhost:12345";
+            var address = "https://localhost:12345";
             using (WebApp.Start<Startup>(address))
             {
                 Console.WriteLine($"Started on {address}");
