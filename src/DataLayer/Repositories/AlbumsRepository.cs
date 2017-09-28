@@ -11,9 +11,14 @@ namespace DataLayer.Repositories
 {
     public class AlbumsRepository : IAlbumsRepository
     {
-        private static HttpClient _client = new HttpClient(); // TODO use IoC
+        private HttpClient _client;
         private const string RESOURCE = "albums";
         private const int PAGE_SIZE = 5;
+
+        public AlbumsRepository(HttpClient client)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
 
         public async Task<Album> FindAlbum(string albumId)
         {

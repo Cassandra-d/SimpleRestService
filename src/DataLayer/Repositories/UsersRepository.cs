@@ -11,10 +11,14 @@ namespace DataLayer.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
-        private static HttpClient _client = new HttpClient(); // TODO use IoC
+        private HttpClient _client;
         private const string RESOURCE = "users";
         private const int PAGE_SIZE = 5;
 
+        public UsersRepository(HttpClient client)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
 
         public async Task<User> FindUser(string userId)
         {

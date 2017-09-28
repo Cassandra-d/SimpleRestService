@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using DataLayer.Contract;
 using DataLayer.Repositories;
+using System.Net.Http;
 
 namespace DataLayer.IoC
 {
@@ -21,6 +22,10 @@ namespace DataLayer.IoC
                 .RegisterType<UsersRepository>()
                 .As<IUsersRepository>()
                 .InstancePerRequest();
+
+            builder
+                .Register<HttpClient>(_ => new HttpClient())
+                .InstancePerLifetimeScope();
         }
     }
 }
