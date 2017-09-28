@@ -7,7 +7,7 @@ using System;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace DataLayer
+namespace DataLayer.Repositories
 {
     public class AlbumsRepository : IAlbumsRepository
     {

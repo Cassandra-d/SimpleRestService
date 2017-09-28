@@ -7,7 +7,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace DataLayer
+namespace DataLayer.Repositories
 {
     public class UsersRepository : IUsersRepository
     {

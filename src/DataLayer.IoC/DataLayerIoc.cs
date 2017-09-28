@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DataLayer.Contract;
+using DataLayer.Repositories;
 
 namespace DataLayer.IoC
 {
