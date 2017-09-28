@@ -1,6 +1,7 @@
 ﻿using ApiGateway.Contract.Models;
 using BusinessLayer.Contract;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -10,6 +11,7 @@ namespace ApiGateway.Controllers
     public class AlbumsController : ApiController
     {
         private readonly IAlbumsService _albumsService;
+        private static MemoryCache _cache = new MemoryCache(nameof(AlbumsController)); // todo init with IoC
 
         public AlbumsController(IAlbumsService albumsService)
         {
@@ -20,10 +22,18 @@ namespace ApiGateway.Controllers
         [Route("")]
         public async Task<IHttpActionResult> AllAlbums(int page = 0)
         {
-            var internalAlbums = await _albumsService.GetAlbums(page); // TODO check cache
             var res = new GenericCollectionResult<Album>();
+            var cacheKey = "page" + page.ToString();
 
-            res.Data = internalAlbums.Select(_ => AutoMapper.Mapper.Instance.Map<Album>(_)).ToArray();
+            if (!_cache.Contains(cacheKey))
+            {
+                var internalAlbums = await _albumsService.GetAlbums(page);
+                var mapped = internalAlbums.Select(_ => AutoMapper.Mapper.Instance.Map<Album>(_)).ToArray();
+
+                _cache.Add(cacheKey, mapped, GetCachePolicy());
+            }
+
+            res.Data = (Album[]) _cache[cacheKey];
 
             return Ok(res);
         }
@@ -32,10 +42,25 @@ namespace ApiGateway.Controllers
         [Route("{id}")]
         public async Task<IHttpActionResult> AlbumById(string id)
         {
-            var internalAlbum = await _albumsService.FindAlbum(id); // TODO check cache
-            var album = AutoMapper.Mapper.Instance.Map<Album>(internalAlbum);
+            var cacheKey = "album" + id;
+
+            if (!_cache.Contains(cacheKey))
+            {
+                var internalAlbum = await _albumsService.FindAlbum(id);
+                var mapped = AutoMapper.Mapper.Instance.Map<Album>(internalAlbum);
+
+                _cache.Add(cacheKey, mapped, GetCachePolicy());
+            }
+
+            var album = (Album) _cache[cacheKey];
 
             return Ok(album);
+        }
+
+        private CacheItemPolicy GetCachePolicy()
+        {
+            // todo object pool pattern
+            return new CacheItemPolicy() { AbsoluteExpiration = new System.DateTimeOffset(System.DateTime.Now.AddSeconds(15)) }; // todo cache interval to app.config
         }
     }
 }
