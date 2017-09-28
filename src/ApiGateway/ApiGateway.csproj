@@ -113,6 +113,10 @@
       <Project>{6877b4ee-9f48-4b7a-955a-17f6924f4e40}</Project>
       <Name>BusinessLayer.IoC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{e3237f86-3579-4626-aa3e-5c3abf4f0bec}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataLayer.Contract\DataLayer.Contract.csproj">
       <Project>{9a2571de-dd6a-4d70-8849-0a9333209d6f}</Project>
       <Name>DataLayer.Contract</Name>

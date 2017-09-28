@@ -9,4 +9,8 @@ You can find the same thing on your local dev machine within Local computer Pers
 * ???
 * PROFIT!
 
-No you can have secured access with, for example, this URL: https://localhost:12345/users/3/albums?page=1.
+Now you can have secured access with, for example, this URL: https://localhost:12345/users/3/albums?page=1.     
+
+You can also run the service without SSL support. It's default mode.
+
+To run with SSL enabled, change App.Config parameter ssl to true. Otherwise use http protocol.
