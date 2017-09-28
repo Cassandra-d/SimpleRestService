@@ -55,7 +55,7 @@ namespace DataLayer
                 return Enumerable.Empty<Album>();
 
             var deserialized = JsonConvert.DeserializeObject<IEnumerable<Album>>(resp);
-            return deserialized.Skip(page * PAGE_SIZE).ToArray();
+            return deserialized.Skip(page * PAGE_SIZE).Take(PAGE_SIZE).ToArray();
         }
 
         private async Task<Album> GetOne(string req)

@@ -36,7 +36,7 @@ namespace DataLayer
             var resp = await _client.GetStringAsync(req);
 
             var deserialized = JsonConvert.DeserializeObject<IEnumerable<User>>(resp);
-            return deserialized.Skip(page * PAGE_SIZE);
+            return deserialized.Skip(page * PAGE_SIZE).Take(PAGE_SIZE);
         }
 
         private async Task<User> GetOne(string req)
