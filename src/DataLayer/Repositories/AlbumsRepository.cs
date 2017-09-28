@@ -12,11 +12,16 @@ namespace DataLayer.Repositories
     public class AlbumsRepository : IAlbumsRepository
     {
         private HttpClient _client;
+        private readonly string _fakeDataHost;
         private const string RESOURCE = "albums";
         private const int PAGE_SIZE = 5;
 
-        public AlbumsRepository(HttpClient client)
+        public AlbumsRepository(HttpClient client, string fakeDataHost)
         {
+            if (string.IsNullOrEmpty(fakeDataHost))
+                throw new ArgumentNullException(nameof(fakeDataHost));
+
+            _fakeDataHost = fakeDataHost;
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
@@ -25,7 +30,7 @@ namespace DataLayer.Repositories
             if (string.IsNullOrEmpty(albumId))
                 throw new ArgumentNullException(nameof(albumId));
 
-            var req = Constants.FakeDataHost + RESOURCE + "/" + albumId;
+            var req = _fakeDataHost + RESOURCE + "/" + albumId;
             return await GetOne(req);
         }
 
@@ -34,7 +39,7 @@ namespace DataLayer.Repositories
             // well, the service does not support paging or navigation, so we have to retrieve everything
             // I don't see any reason why I should implement any optimisations here like caching or something similar, as it is not a programming problem I need to solve, but data storage
 
-            var req = Constants.FakeDataHost + RESOURCE;
+            var req = _fakeDataHost + RESOURCE;
             return await GetMany(req, page);
         }
 
@@ -47,7 +52,7 @@ namespace DataLayer.Repositories
             // the reason why it is here and not in users repo is that any developer that would want to look at how we retrieve albums for user will probably look at this repo first
 
             string usersResource = "users";
-            var req = Constants.FakeDataHost + usersResource + "/" + userId + "/" + RESOURCE;
+            var req = _fakeDataHost + usersResource + "/" + userId + "/" + RESOURCE;
 
             return await GetMany(req, page);
         }

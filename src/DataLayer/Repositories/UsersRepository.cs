@@ -12,12 +12,17 @@ namespace DataLayer.Repositories
     public class UsersRepository : IUsersRepository
     {
         private HttpClient _client;
+        private readonly string _fakeDataHost;
         private const string RESOURCE = "users";
         private const int PAGE_SIZE = 5;
 
-        public UsersRepository(HttpClient client)
+        public UsersRepository(HttpClient client, string fakeDataHost)
         {
+            if (string.IsNullOrEmpty(fakeDataHost))
+                throw new ArgumentNullException(nameof(fakeDataHost));
+
             _client = client ?? throw new ArgumentNullException(nameof(client));
+            _fakeDataHost = fakeDataHost;
         }
 
         public async Task<User> FindUser(string userId)
@@ -25,13 +30,13 @@ namespace DataLayer.Repositories
             if (string.IsNullOrEmpty(userId))
                 throw new ArgumentNullException(nameof(userId));
 
-            var req = Constants.FakeDataHost + RESOURCE + "/" + userId;
+            var req = _fakeDataHost + RESOURCE + "/" + userId;
             return await GetOne(req);
         }
 
         public async Task<IEnumerable<User>> GetUsers(int page)
         {
-            var req = Constants.FakeDataHost + RESOURCE;
+            var req = _fakeDataHost + RESOURCE;
             return await GetMany(req, page);
         }
 

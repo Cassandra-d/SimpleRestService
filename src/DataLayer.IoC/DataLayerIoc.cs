@@ -11,15 +11,15 @@ namespace DataLayer.IoC
         {
         }
 
-        public static void Register(ContainerBuilder builder)
+        public static void Register(ContainerBuilder builder, string dataHost)
         {
             builder
-                .RegisterType<AlbumsRepository>()
+                .Register<AlbumsRepository>(_ => new AlbumsRepository(_.Resolve<HttpClient>(), dataHost))
                 .As<IAlbumsRepository>()
                 .InstancePerRequest();
 
             builder
-                .RegisterType<UsersRepository>()
+                .Register<UsersRepository>(_ => new UsersRepository(_.Resolve<HttpClient>(), dataHost))
                 .As<IUsersRepository>()
                 .InstancePerRequest();
 
