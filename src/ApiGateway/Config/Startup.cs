@@ -18,6 +18,8 @@ namespace ApiGateway.Config
 
             ConfigureAutofac(config);
 
+            ModelMapping.Configure();
+
             app.UseAutofacWebApi(config);
 
             app.UseWebApi(config);

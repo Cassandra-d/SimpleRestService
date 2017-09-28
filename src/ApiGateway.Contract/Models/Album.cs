@@ -9,12 +9,6 @@ namespace ApiGateway.Contract.Models
         public int Id { get; internal set; }
 
         [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "year")]
-        public int Year { get; set; }
-
-        [DataMember(Name = "cover")]
-        public string CoverUrl { get; set; }
+        public string Title { get; set; }
     }
 }
